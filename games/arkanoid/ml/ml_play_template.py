@@ -2,13 +2,23 @@
 """
 
 import games.arkanoid.communication as comm
-from games.arkanoid.communication import ( \
+from games.arkanoid.communication import ( 
     SceneInfo, GameStatus, PlatformAction
 )
 ball_last_x = 0
 ball_last_y = 0
-ball_hitPoint = [0,0]
+ball_did_change_to_moving_down = False
+
 def get_ball_direction(x,y):
+    return get_ball_is_moving_right(x), get_ball_is_moving_down(y)
+
+def get_ball_is_moving_right(x):
+    global ball_last_x
+    result = x - ball_last_x
+    ball_last_x = x
+    return result > 0
+
+def get_ball_is_moving_down(y):
 
     global ball_last_y
     # print(y,ball_last_y)
@@ -24,6 +34,7 @@ def get_ball_direction(x,y):
     return is_go_down
     
 def ml_loop():
+    global ball_did_change_to_moving_down
     """The main loop of the machine learning process
 
     This loop is run in a separate process, and communicates with the game process.
@@ -39,7 +50,8 @@ def ml_loop():
 
     # 2. Inform the game process that ml process is ready before start the loop.
     comm.ml_ready()
-
+    hit_x = 0
+    hit_y = 0
     # 3. Start an endless loop.
     while True:
         # 3.1. Receive the scene information sent from the game process.
@@ -59,8 +71,23 @@ def ml_loop():
         ball_x = scene_info.ball[0]
         ball_y = scene_info.ball[1]
         platform_x = scene_info.platform[0]
-        direction = get_ball_direction(ball_x, ball_y)
-        print("ball move down:", direction)
+
+        # 取得 每幀的 ball 資訊 
+        # ball_info 為 ball 的動態: True/False: (向右/左, 向下/上) as tuple
+        #
+        ball_info = get_ball_direction(ball_x, ball_y)
+        ball_is_going_right = ball_info[0]
+        ball_is_going_down  = ball_info[1]
+        ## 取得 ball 在開始下墜的點: hit_x, hit_y
+        if not ball_is_going_down:
+            print("ball moving up")
+            ball_did_change_to_moving_down = False
+            continue
+        if not ball_did_change_to_moving_down:
+            ball_did_change_to_moving_down = True
+            hit_x = ball_x
+            hit_y = ball_y
+        print("hit_x, hit_y:",hit_x, hit_y, ball_is_going_right)
         # if ball_x < platform_x:
         #     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
         # else:
