@@ -43,5 +43,5 @@ sav = svm.fit(x_train,y_train)
 yp_svm=svm.predict(x_test)
 acc_test=accuracy_score(yp_svm,y_test)
 print("accuracy_score:",acc_test)
-filename = "model.sav"
+filename = "games/arkanoid/ml/model.sav"
 pickle.dump(sav,open(filename,'wb'))
