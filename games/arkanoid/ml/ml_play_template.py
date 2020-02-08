@@ -39,6 +39,8 @@ def ml_loop():
             continue
 
         # 3.3. Put the code here to handle the scene information
-
+        ball_x = scene_info.ball[0]
+        ball_y = scene_info.ball[1]
+        print(ball_x,ball_y)
         # 3.4. Send the instruction for this frame to the game process
         comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
