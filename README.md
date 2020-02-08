@@ -1,4 +1,5 @@
 # MLGame
+the game submit URL: http://mlgame.program-the-world.com/
 
 A platform for applying machine learning algorithm to play pixel games
 
