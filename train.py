@@ -21,10 +21,9 @@ PlatX=np.array(PlatformPositon)[:,0][:, np.newaxis]
 PlatX_next=PlatX[1:,:]
 # 顯示板子的移動方向（+為往右，-為往左） (5為板子移動速度)
 instruct=(PlatX_next-PlatX[0:len(PlatX_next),0][:,np.newaxis])/5
-
+# 球的座標集合
 Ballarray=np.array(Ballposition[:-1])
-print(Ballarray)
-# --->
+
 # x 為球座標
 x=np.hstack((Ballarray,PlatX[0:-1,0][:,np.newaxis]))
 # y 為板子的x座標
@@ -38,10 +37,8 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
 svm = SVC(gamma='auto')
-sav = svm.fit(x_train,y_train)
+svm.fit(x_train,y_train)
 
 yp_svm=svm.predict(x_test)
 acc_test=accuracy_score(yp_svm,y_test)
 print("accuracy_score:",acc_test)
-filename = "model.sav"
-pickle.dump(sav,open(filename,'wb'))
