@@ -1,5 +1,5 @@
 import pickle
-with open("games/arkanoid/log/2020-02-08_11-36-37.pickle", "rb") as f:
+with open("games/arkanoid/log/2020-02-08_11-18-24.pickle", "rb") as f:
 	data_list = pickle.load(f)
 
 Frame=[]
@@ -8,20 +8,26 @@ Ballposition=[]
 PlatformPositon=[]
 Bricks=[]
 for i in range(0,len(data_list)):
-	Frame  			.append(data_list[i].frame)
-	Status 			.append(data_list[i].status)
-	Ballposition	.append(data_list[i].ball)
-	PlatformPositon .append(data_list[i].platform)
-	Bricks 			.append(data_list[i].bricks)
+	Frame.append(data_list[i].frame)
+	Status.append(data_list[i].status)
+	Ballposition.append(data_list[i].ball)
+	PlatformPositon.append(data_list[i].platform)
+	Bricks.append(data_list[i].bricks)
 
 import numpy as np
+# PlatX為板子的初始X座標
 PlatX=np.array(PlatformPositon)[:,0][:, np.newaxis]
+# Plat_X為板子的下一步X座標
 PlatX_next=PlatX[1:,:]
+# 顯示板子的移動方向（+為往右，-為往左） (5為板子移動速度)
 instruct=(PlatX_next-PlatX[0:len(PlatX_next),0][:,np.newaxis])/5
 
 Ballarray=np.array(Ballposition[:-1])
+print(Ballarray)
 # --->
+# x 為球座標
 x=np.hstack((Ballarray,PlatX[0:-1,0][:,np.newaxis]))
+# y 為板子的x座標
 y=instruct
 
 from sklearn.model_selection import train_test_split
