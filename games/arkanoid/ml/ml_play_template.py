@@ -5,7 +5,24 @@ import games.arkanoid.communication as comm
 from games.arkanoid.communication import ( \
     SceneInfo, GameStatus, PlatformAction
 )
+ball_last_x = 0
+ball_last_y = 0
+ball_hitPoint = [0,0]
+def get_ball_direction(x,y):
 
+    global ball_last_y
+    # print(y,ball_last_y)
+    d = y - ball_last_y
+    is_go_down = False
+    if d > 0:
+        # print("⏬")
+        is_go_down = True
+    # else: 
+        # print("⏫")
+
+    ball_last_y = y
+    return is_go_down
+    
 def ml_loop():
     """The main loop of the machine learning process
 
@@ -42,8 +59,10 @@ def ml_loop():
         ball_x = scene_info.ball[0]
         ball_y = scene_info.ball[1]
         platform_x = scene_info.platform[0]
-        if ball_x < platform_x:
-            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-        else 
+        direction = get_ball_direction(ball_x, ball_y)
+        print("ball move down:", direction)
+        # if ball_x < platform_x:
+        #     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+        # else:
+        #     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
         # 3.4. Send the instruction for this frame to the game process
-            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
