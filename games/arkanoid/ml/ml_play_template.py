@@ -41,6 +41,9 @@ def ml_loop():
         # 3.3. Put the code here to handle the scene information
         ball_x = scene_info.ball[0]
         ball_y = scene_info.ball[1]
-        print(ball_x,ball_y)
+        platform_x = scene_info.platform[0]
+        if ball_x < platform_x:
+            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+        else 
         # 3.4. Send the instruction for this frame to the game process
-        comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
