@@ -61,7 +61,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
 svm = SVC(gamma='auto')
-svm.fit(x_train,y_train)
+sav = svm.fit(x_train,y_train)
 
 yp_svm=svm.predict(x_test)
 acc_test=accuracy_score(yp_svm,y_test)
