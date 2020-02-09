@@ -45,9 +45,24 @@ PlatX_next=PlatX[1:,:]
 instruct=(PlatX_next-PlatX[0:len(PlatX_next),0][:,np.newaxis])/5
 # 球的座標集合
 Ballarray=np.array(Ballposition[:-1])
-
+ball_x=Ballarray[:,0]
+ball_y=Ballarray[:,1]
 # x 為球座標
-x=np.hstack((Ballarray,PlatX[0:-1,0][:,np.newaxis]))
+platform_array=PlatX[0:-1,0]#[:,np.newaxis]
+flame_array=np.array(Frame[0:-1])
+print(ball_x)
+print(ball_y)
+print(platform_array)
+print(flame_array)
+
+x=np.array((
+	ball_x,
+	ball_y,
+	platform_array,
+	flame_array
+	)).T
+print("x",x)
+print(x.shape)
 # y 為板子的x座標
 y=instruct
 
