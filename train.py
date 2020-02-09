@@ -48,18 +48,29 @@ Ballarray=np.array(Ballposition[:-1])
 ball_x=Ballarray[:,0]
 ball_y=Ballarray[:,1]
 # x 為球座標
+x_history=[1]
 platform_array=PlatX[0:-1,0]#[:,np.newaxis]
-flame_array=np.array(Frame[0:-1])
+for index in range(1, len(ball_x)):
+	ball_now_x = ball_x[index]
+	ball_pre_x = ball_x[index-1]
+	v = ball_now_x-ball_pre_x > 0
+	if v > 0:
+		x_history.append(1)
+	if v == 0:
+		x_history.append(0)
+	if v < 0:
+		x_history.append(-1)
+x_is_Right_array=np.array(x_history)
 print(ball_x)
 print(ball_y)
 print(platform_array)
-print(flame_array)
+print(x_is_Right_array)
 
 x=np.array((
 	ball_x,
 	ball_y,
 	platform_array,
-	flame_array
+	x_is_Right_array
 	)).T
 print("x",x)
 print(x.shape)

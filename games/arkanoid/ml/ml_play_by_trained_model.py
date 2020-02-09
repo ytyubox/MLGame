@@ -28,12 +28,14 @@ def ml_loop():
     filename = 'model.sav'
     model = pickle.load(open(filename,'rb'))
     comm.ml_ready()
-
+    last_x=0
     # 3. Start an endless loop.
     while True:
         # 3.1. Receive the scene information sent from the game process.
         scene_info = comm.get_scene_info()
-        inp_temp = np.array([scene_info.ball[0], scene_info.ball[1], scene_info.platform[0]])
+        direction = 1 if scene_info.ball[0] > last_x else -1
+
+        inp_temp = np.array([scene_info.ball[0], scene_info.ball[1], scene_info.platform[0],direction])
         input=inp_temp[np.newaxis, :]
 
         # 3.2. If the game is over or passed, the game process will reset
